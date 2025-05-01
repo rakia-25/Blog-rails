@@ -1,0 +1,57 @@
+<div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+  <h1 class="text-3xl font-bold text-gray-900 mb-4">
+    Titre: <%= @article["titre"] %>
+  </h1>
+
+  <p class="text-gray-700 text-lg leading-relaxed mb-6">
+    <%= @article["contenu"] %>
+  </p>
+
+  <h2 class="text-2xl font-bold mt-6">Commentaires</h2>
+
+  <% if @comments.any? %>
+    <% @comments.each do |comment| %>
+      <div class="p-4 mb-4 border border-gray-300 rounded-md">
+        <p>
+          <strong><%= comment.author %> :</strong> <%= comment.content %>
+        </p>
+        <div class="mt-2 flex gap-2">
+      <a href="<%= edit_comment_path(article_id:@article.id, id:comment.id)%>"
+             class="inline-block px-3 py-2 mt-2 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700">
+            Modifier
+          </a>
+
+      <%= form_with url: delete_comment_path(article_id: @article.id, id: comment.id), method: :delete do %>
+      <button type="submit"
+              class="inline-block px-4 py-2 mt-2 bg-red-600 text-white font-bold rounded-md hover:bg-red-700">
+        Supprimer
+      </button>
+    <% end %>
+    </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p>Aucun commentaire pour cet article</p>
+  <% end %>
+
+  <%= form_with model: @comment, url: create_comment_path(@article), method: :post do |form| %>
+    <div class="mb-4">
+      <%= form.label :author, "Votre nom" %>
+      <%= form.text_field :author, class: "w-full px-4 py-2 border border-gray-300 rounded-md" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :content, "Votre commentaire" %>
+      <%= form.text_area :content, class: "w-full px-4 py-2 border border-gray-300 rounded-md" %>
+    </div>
+
+    <div>
+      <%= form.submit "Ajouter le commentaire", class: "bg-blue-600 text-white px-4 py-2 rounded-md" %>
+    </div>
+  <% end %>
+
+  <a href="<%= articles_index_path %>"
+     class="inline-block px-3 py-2 mt-2 bg-green-600 text-white font-bold rounded-md hover:bg-green-700">
+    Retour
+  </a>
+</div>

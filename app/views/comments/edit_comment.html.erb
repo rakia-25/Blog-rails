@@ -1,0 +1,19 @@
+<h1 class="text-2xl font-bold mb-4">Modifier le commentaire</h1>
+<%= form_with model: @comment, url: update_comment_path(id: @article.id, comment_id: @comment.id), method: :put do |form| %>
+    <div class="mb-4">
+      <%= form.label :author, "Votre nom" %>
+      <%= form.text_field :author, class: "w-full px-4 py-2 border border-gray-300 rounded-md" %>
+    </div>
+
+    <div class="mb-4">
+      <%= form.label :content, "Votre commentaire" %>
+      <%= form.text_area :content, class: "w-full px-4 py-2 border border-gray-300 rounded-md" %>
+    </div>
+    <div class="mb-4">
+    <%= form.label :status, "Statut" %>
+    <%= form.select :status, Comment.statuses.keys, {},class:"w-full px-4 py-2 border border-gray-300 rounded-md"%>
+    </div>
+    <div>
+      <%= form.submit "Modifier le commentaire", class: "bg-blue-600 text-white px-4 py-2 rounded-md" %>
+    </div>
+  <% end %>
