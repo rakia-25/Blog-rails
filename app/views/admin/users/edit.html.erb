@@ -1,0 +1,16 @@
+<h1 class="text-3xl font-bold mb-6 text-gray-800">
+  Modifier le rôle de <%= @user.email %>
+</h1>
+
+<%= form_with model: @user, url: admin_user_path(@user), local: true, class: "space-y-6 bg-white shadow-md rounded-lg p-8" do |f| %>
+  <div class="flex items-center space-x-4">
+    <%= f.label :role_admin, "Administrateur ?", class: "text-lg font-semibold text-gray-700" %>
+    <%= f.check_box :role_admin, class: "w-5 h-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" %>
+  </div>
+
+  <div>
+    <%= f.submit "Enregistrer", class: "bg-indigo-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300" %>
+  </div>
+<% end %>
+
+<%= link_to "Retour à la liste des utilisateurs", admin_users_path, class: "text-indigo-600 hover:text-indigo-800 font-semibold mt-4 inline-block" %>

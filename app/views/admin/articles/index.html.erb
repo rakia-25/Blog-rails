@@ -1,53 +1,60 @@
 <% if notice %>
-  <div class="bg-green-100 text-green-800 border border-green-200 px-4 py-2 rounded mb-4">
+  <div class="max-w-4xl mx-auto mt-4 bg-green-100 text-green-800 border border-green-200 px-4 py-3 rounded mb-6">
     <%= notice %>
   </div>
 <% end %>
-<h2 class="text-2xl font-bold mb-4">Bienvenue !</h2>
-<div class="mt-4">
-  <a href="<%= new_article_path%>" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">
-        Créer un article
-  </a>
-</div><br> <br>
 
-<% if notice %>
-  <div class="bg-green-100 text-green-800 border border-green-200 px-4 py-2 rounded mb-4">
-    <%= notice %>
+<div class="max-w-4xl mx-auto px-4">
+  <h2 class="text-2xl font-bold mb-4">Bienvenue !</h2>
+
+  <div class="mt-4 mb-8">
+    <a href="<%= new_admin_article_path %>" 
+       class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded shadow transition">
+       Créer un article
+    </a>
   </div>
-<% end %>
-<h2 class="text-2xl font-bold mb-4">Liste des articles</h2>
-<div class="bg-white shadow-md p-4 rounded">
-  <ul>
-    <% if @articles.empty? %>
-      <li class="text-gray-500">Aucun article trouvé.</li>
-    <% else %>
+
+  <h2 class="text-2xl font-bold mb-6">Liste des articles</h2>
+
+  <% if @articles.empty? %>
+    <p class="text-gray-500">Aucun article trouvé.</p>
+  <% else %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <% @articles.each do |article| %>
-        <li class="border-b py-2">
-          <strong>Titre de l'article :</strong> <%= article.titre %> - <strong>Status :</strong> <span class="text-red-500"><%= article.status %></span><br>
+        <div class="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2"><%= article.titre %></h3>
+
+          <p class="text-sm text-gray-600 mb-1">
+            <strong>Status :</strong> 
+            <span class="text-red-500"><%= article.status %></span>
+          </p>
+
           <% if article.published_at.present? %>
-      <strong>Publié le :</strong> <%= article.published_at.strftime('%d/%m/%Y à %H:%M') %><br>
-    <% end %>
-<div class="flex gap-[3px]">
-<a href="<%= article_path(id: article.id) %>"
-             class="inline-block px-3 py-2 mt-2 bg-green-600 text-white font-bold rounded-md hover:bg-green-700">
-            Voir
-          </a>
-
-          <a href="<%= edit_article_path(id: article.id)%>"
-             class="inline-block px-3 py-2 mt-2 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700">
-            Modifier
-          </a>
-
-          <%= form_with url: article_path(article.id), method: :delete do %>
-            <button type="submit"
-                    class="inline-block px-4 py-2 mt-2 bg-red-600 text-white font-bold rounded-md hover:bg-red-700">
-              Supprimer
-            </button>
+            <p class="text-sm text-gray-600 mb-3">
+              <strong>Publié le :</strong> <%= article.display_published %>
+            </p>
           <% end %>
-</div>
-          
-        </li>
+
+          <div class="flex flex-wrap gap-2 mt-4">
+            <a href="<%= admin_article_path(article.id) %>" 
+               class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition">
+              Voir
+            </a>
+
+            <a href="<%= edit_admin_article_path(article.id) %>" 
+               class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
+              Modifier
+            </a>
+
+            <%= form_with url: admin_article_path(article.id), method: :delete do %>
+              <button type="submit" 
+                      class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition">
+                Supprimer
+              </button>
+            <% end %>
+          </div>
+        </div>
       <% end %>
-    <% end %>
-  </ul>
+    </div>
+  <% end %>
 </div>

@@ -1,8 +1,13 @@
-<% article.errors.each do |error|%>
-<li>
-<%= error.full_message%>
-</li>
+<% if article.errors.any? %>
+  <div class="bg-red-100 text-red-800 border border-red-200 px-4 py-2 rounded mb-4">
+    <ul>
+      <% article.errors.full_messages.each do |error| %>
+        <li><%= error %></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>
+
 <%= form_with model: article do |form| %>
   <div class="mb-4">
     <%= form.label :titre, "Titre de l'article", class: "block text-sm font-medium text-gray-700" %>
@@ -12,10 +17,14 @@
   <div class="mb-4">
     <%= form.label :contenu, "Contenu de l'article", class: "block text-sm font-medium text-gray-700" %>
     <%= form.text_area :contenu, class: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", rows: 5 %>
-  </div><br>
-  <%= form.select :status, Article.statuses.keys %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :status, "Statut de l'article", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.select :status, Article.statuses.keys.map { |status| [status.humanize, status] }, {}, class: "mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
+  </div>
 
   <div>
-    <%= form.submit class: "py-2 px-4 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
+    <%= form.submit "Enregistrer", class: "py-2 px-4 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" %>
   </div>
 <% end %>

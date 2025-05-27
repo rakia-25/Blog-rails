@@ -1,31 +1,12 @@
 class ArticlesController < ApplicationController
-    
-    
-    def index
-        @articles = Article.all
-    end
-    
-    def articles_published
-        @articles = Article.published
+    layout "user"
+    def home 
+       
+        @articles = ArticleDecorator.decorate_collection(Article.published)
         render :articles_published
     end
     
-    def new
-        @article = Article.new()
-        render :new
-    end
-
-    def create
-        
-        @article = Article.new(article_params)
-        
-        if @article.save
-            redirect_to article_path(@article), notice: "article créer avec succés"
-        else
-            render :new, status: :unprocessable_entity
-        end
-    end
-
+   
     def show
         @article = Article.find(params[:id])
         @comment=Comment.new
@@ -47,7 +28,7 @@ class ArticlesController < ApplicationController
             if @article.status=="published"
                 @article.update(published_at:Time.now) 
             end
-            redirect_to articles_index_path,notice: "Article modifié avec succès !"
+            redirect_to articles_path,notice: "Article modifié avec succès !"
         else
             render :edit, status: :unprocessable_entity
         end
@@ -62,6 +43,13 @@ class ArticlesController < ApplicationController
             redirect_to articles_path, notice: "La supression de l'Article a echouer !"
         end
     end
+
+    def show_comments
+        @article = Article.find(params[:id])
+        @comments = @article.comments.accepted
+        render :articles_published
+    end
+    
 
     private
   def article_params
